@@ -37,7 +37,6 @@ class UserController extends Controller
         $user-> password = Hash::make($request->password);
         $user-> phone = $request->phone;
         $user-> role = $request->role;
-       
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $fileName = time() . '.' . $file->getClientOriginalExtension();
@@ -78,10 +77,18 @@ class UserController extends Controller
         $user-> id = $request->id;
         $user-> name = $request->name;
         $user-> email = $request->email;
-        //$user-> password = bcrypt($request->password);
-        $user-> image = $request->image;
+        $user-> password = Hash::make($request->password);
         $user-> phone = $request->phone;
         $user-> role = $request->role;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $request->file('image')->move('storage/images/profilePics/', $fileName);
+            $user->image = asset('storage/images/profilePics/' . $fileName);
+        } else {
+            // nombre de una imagen default por si el usuario no ingreso ninguna
+            $user->image = asset('storage/images/utilities/default.jpg');
+        }
 
         $user->save();
         return response()->json(['user' => $user]);

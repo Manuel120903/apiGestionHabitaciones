@@ -22,7 +22,6 @@ class UserSeeder extends Seeder
             'image' => 'storage/images/profilePics/carmen.jpg',
             'password' => Hash::make('carmen123'),
             'role' => 1,
-
             ]);
         }
     }
